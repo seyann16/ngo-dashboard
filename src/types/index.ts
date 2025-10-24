@@ -16,7 +16,7 @@ export interface Campaign {
     description: string;
     goal: number;
     currentAmount: number;
-    startData: string;
+    startDate: string;
     endDate: string;
     status: 'active' | 'completed' | 'upcoming';
     category: string;
