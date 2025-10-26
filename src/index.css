@@ -1,24 +1,93 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-@tailwindcss;
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+@reference "tailwindcss";
+
+@theme {
+  /* Primary color palette */
+  --color-primary-50: #e5f7f7;
+  --color-primary-100: #b8eaea;
+  --color-primary-200: #8ada8c;
+  --color-primary-300: #5ccdcc;
+  --color-primary-400: #33bdbd;
+  --color-primary-500: #009898;
+  --color-primary-600: #007575;
+  --color-primary-700: #005d5d;
+  --color-primary-800: #004444;
+  --color-primary-900: #002f2f;
+
+  /* Success */
+  --color-success-50: #e9f6ee;
+  --color-success-100: #c3e9cf;
+  --color-success-200: #9ddcad;
+  --color-success-300: #72cf87;
+  --color-success-400: #47c168;
+  --color-success-500: #198038;
+  --color-success-600: #156c31;
+  --color-success-700: #115828;
+  --color-success-800: #0c441e;
+  --color-success-900: #083015;
+
+  /* Warning */
+  --color-warning-50: #fffbea;
+  --color-warning-100: #fef3c7;
+  --color-warning-200: #fde68a;
+  --color-warning-300: #fcd34d;
+  --color-warning-400: #facc15;
+  --color-warning-500: #f1c21b;
+  --color-warning-600: #d6a613;
+  --color-warning-700: #b98a0f;
+  --color-warning-800: #946b0b;
+  --color-warning-900: #6e4d07;
+
+  /* Error */
+  --color-error-50: #fdeaea;
+  --color-error-100: #f8cccc;
+  --color-error-200: #f2a9a9;
+  --color-error-300: #ec8585;
+  --color-error-400: #e65f5f;
+  --color-error-500: #da1e28;
+  --color-error-600: #bf1923;
+  --color-error-700: #a4141d;
+  --color-error-800: #880f17;
+  --color-error-900: #6a0b11;
+}
 
 @layer base {
+  [data-theme="dark"], .dark {
+    color-scheme: dark;
+  }
+
   html {
     font-family: 'Inter', system-ui, sans-serif;
+    /* BUG FIX: Ensure proper text-rendering on mobile */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   body {
-    @apply bg-gray-50 text-gray-900 transition-colors duration-200;
+    @apply bg-gray-50 text-gray-900 transition-colors duration-200 dark:bg-gray-900 dark:text-gray-100;
+    /* BUG FIX: Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
   }
 
-  body.dark {
+  html.dark body {
     @apply bg-gray-900 text-gray-100;
   }
   
   button:focus-visible,
   a:focus-visible,
   input:focus-visible,
-  select:focus-visible {
+  select:focus-visible,
+  [tabindex]:focus-visible {
     @apply outline-2 outline-offset-2 outline-primary-500;
+  }
+
+  /* BUG FIX: Prevent zoom on mobile for inputs */
+  @media (max-width: 768px) {
+    input, select, textarea {
+      font-size: 16px; /* Prevents zoom on iOS */
+    }
   }
 }
 
@@ -29,5 +98,18 @@
 
   .card-hover {
     @apply hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600;
+  }
+}
+
+/* BUG FIX: Custom responsive breakpoints for extra small screens */
+@layer utilities {
+  @media (min-width: 475px) {
+    .xs\:grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .dark & {
+    @apply dark:bg-gray-900 dark:text-gray-100;
   }
 }
