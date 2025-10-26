@@ -20,6 +20,15 @@ const StatsCard: React.FC<StatsCardProps> = ({
   description,
   color = "primary",
 }) => {
+  // BUG FIX: Added keyboard support for interactive stats cards
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      // TODO: Implement drill-down functionality
+      console.log(`Navigate to ${title} details`);
+    }
+  };
+
   const colorClasses = {
     primary:
       "text-primary-600 bg-primary-50 dark:bg-primary-900/20 dark:text-primary-400",
@@ -34,9 +43,16 @@ const StatsCard: React.FC<StatsCardProps> = ({
   const isPositiveTrend = trend && trend >= 0;
 
   return (
-    <Card hover className="p-6">
+    <Card hover 
+      className="p-4 sm:p-6 cursor-pointer transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800"
+      onClick={() => console.log(`Navigate to ${title} details`)}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+      aria-label={`${title}: ${value}. ${trend !== undefined ? `${isPositiveTrend ? 'Increased' : 'Decreased'} by ${Math.abs(trend)}% from last month.` : ''} ${description || ''}`}
+    >
       <div className="flex items-center justify-between">
-        <div className="flex-1">
+        <div className="flex-1 min-w-0"> {/* BUG FIX: Added min-w-0 for text truncation */}
           <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
             {title}
           </p>
