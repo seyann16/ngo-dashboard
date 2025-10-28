@@ -63,12 +63,14 @@
     /* BUG FIX: Ensure proper text-rendering on mobile */
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    /* BUG FIX: Ensure smooth scrolling */
+    scroll-behavior: smooth;
   }
 
   body {
     @apply bg-gray-50 text-gray-900 transition-colors duration-200 dark:bg-gray-900 dark:text-gray-100;
     /* BUG FIX: Prevent horizontal scroll on mobile */
-    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   html.dark body {
@@ -88,6 +90,34 @@
     input, select, textarea {
       font-size: 16px; /* Prevents zoom on iOS */
     }
+  }
+
+  /* BUG FIX: Custom scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-primary-500;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary-500 rounded-lg;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary-500;
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #9ca3af #f3f4f6;
+  }
+
+  .dark * {
+    scrollbar-color: #4b5563 #1f2937;
   }
 }
 
