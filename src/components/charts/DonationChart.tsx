@@ -57,7 +57,7 @@ const DonationChart: React.FC = () => {
     <Card className="p-6">
       <div className="flex flex-col sm:flex sm:items-center sm:justify-between mb-6">
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white text-center">
             Donation Trends
           </h2>
           <p className="text-sm text-gray-600 dark:text-gray-400">
