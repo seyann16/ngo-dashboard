@@ -40,7 +40,7 @@ const SideBar: React.FC<SideBarProps> = ({
   return (
     <aside
       className={`bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-200 flex flex-col rounded-b-xl ${
-        isOpen ? "w-64 h-132" : "w-20"
+        isOpen ? "w-64 h-164" : "w-20"
       }`}
       aria-label="Main navigation"
     >
@@ -77,7 +77,7 @@ const SideBar: React.FC<SideBarProps> = ({
       {/* Current Campaign Progress */}
       {isOpen && (
         <div 
-          className="mt-8 mx-4 p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg"
+          className="mt-40 mx-4 p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg"
           aria-label="Current campaign progress"
         >
           <h3 className="text-sm font-medium text-primary-900 dark:text-primary-100 mb-2">
