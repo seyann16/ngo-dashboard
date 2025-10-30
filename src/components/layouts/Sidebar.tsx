@@ -1,73 +1,75 @@
-import React from "react";
-import {
-  FiHome,
-  FiBarChart2,
-  FiUsers,
-  FiDollarSign,
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { 
+  FiHome, 
+  FiBarChart2, 
+  FiUsers, 
+  FiDollarSign, 
   FiSettings,
-  FiCalendar,
-} from "react-icons/fi";
+  FiCalendar 
+} from 'react-icons/fi';
 
-interface SideBarProps {
+interface SidebarProps {
   isOpen?: boolean;
-  activeItem?: string;
-  onItemClick?: (itemName: string) => void;
 }
 
-const SideBar: React.FC<SideBarProps> = ({ 
-  isOpen = true,
-  activeItem = 'Dashboard',
-  onItemClick 
-}) => {
-  // BUG FIX: Added proper menu items with click handlers and keyboard support
+const Sidebar: React.FC<SidebarProps> = ({ isOpen = true }) => {
+  const location = useLocation();
+
   const menuItems = [
-    { id: 'dashboard', icon: FiHome, label: 'Dashboard' },
-    { id: 'analytics', icon: FiBarChart2, label: 'Analytics' },
-    { id: 'donors', icon: FiUsers, label: 'Donors' },
-    { id: 'campaigns', icon: FiDollarSign, label: 'Campaigns' },
-    { id: 'events', icon: FiCalendar, label: 'Events' },
-    { id: 'settings', icon: FiSettings, label: 'Settings' },
+    { id: 'dashboard', path: '/', icon: FiHome, label: 'Dashboard' },
+    { id: 'analytics', path: '/analytics', icon: FiBarChart2, label: 'Analytics' },
+    { id: 'donors', path: '/donors', icon: FiUsers, label: 'Donors' },
+    { id: 'campaigns', path: '/campaigns', icon: FiDollarSign, label: 'Campaigns' },
+    { id: 'events', path: '/events', icon: FiCalendar, label: 'Events' },
+    { id: 'settings', path: '/settings', icon: FiSettings, label: 'Settings' },
   ];
 
-  // BUG FIX: Handle keyboard events for accessibility
-  const handleKeyDown = (event: React.KeyboardEvent, itemId: string) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      onItemClick?.(itemId);
+  const isActive = (path: string) => {
+    if (path === '/') {
+      return location.pathname === '/';
     }
-  }
+    return location.pathname.startsWith(path);
+  };
 
   return (
-    <aside
-      className={`bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-200 flex flex-col rounded-b-xl ${
-        isOpen ? "w-64 h-164" : "w-20"
-      }`}
+    <aside 
+      className={`
+        bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700
+        transition-all duration-200 flex flex-col h-full rounded-b-xl
+        ${isOpen ? 'w-64' : 'w-20'}
+      `}
       aria-label="Main navigation"
     >
       {/* Navigation */}
-      <nav className="p-4">
-        <ul className="space-y-2">
-          {menuItems.map((item, index) => {
+      <nav className="flex-1 p-4">
+        <ul className="space-y-2" role="menubar" aria-label="Main menu">
+          {menuItems.map((item) => {
             const Icon = item.icon;
-            const isActive = activeItem === item.id;
+            const active = isActive(item.path);
+            
             return (
-              <li key={index}>
-                <button
+              <li key={item.id} role="none">
+                <Link
+                  to={item.path}
                   role="menuitem"
                   aria-label={item.label}
-                  aria-current={isActive ? 'page' : undefined}
-                  className={`w-full flex items-center px-3 py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800
-                    ${isActive ? 'bg-primary-50 dark:bg-primary-900/2 text-prumary-600 dark:text-primary-400 border-r-2 border-primary-600'
-                      : 'text-gray-600 dark:tet-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-200'
+                  aria-current={active ? 'page' : undefined}
+                  className={`
+                    w-full flex items-center px-3 py-3 rounded-lg transition-colors
+                    focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800
+                    ${active 
+                      ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 border-r-2 border-primary-600' 
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-200'
                     }
                   `}
-                  onClick={() => onItemClick?.(item.id)}
-                  onKeyDown={(e) => {handleKeyDown(e, item.id)}}
-                  tabIndex={0} // BUG FIX: Ensure button is focusable
+                  tabIndex={0}
                 >
-                  <Icon className={`w-5 h-5 ${isOpen ? "mr-3" : ""}`} />
-                  {isOpen && <span className="font-medium">{item.label}</span>}
-                </button>
+                  <Icon className={`w-5 h-5 shrink-0 ${isOpen ? 'mr-3' : ''}`} />
+                  {isOpen && (
+                    <span className="font-medium truncate">{item.label}</span>
+                  )}
+                </Link>
               </li>
             );
           })}
@@ -77,7 +79,7 @@ const SideBar: React.FC<SideBarProps> = ({
       {/* Current Campaign Progress */}
       {isOpen && (
         <div 
-          className="mt-40 mx-4 p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg"
+          className="mx-4 p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg mb-4"
           aria-label="Current campaign progress"
         >
           <h3 className="text-sm font-medium text-primary-900 dark:text-primary-100 mb-2">
@@ -92,8 +94,8 @@ const SideBar: React.FC<SideBarProps> = ({
             aria-label="65% of $50,000 goal reached"
           >
             <div 
-                className="bg-primary-600 h-2 rounded-full transition-all duration-500"
-                style={{ width: '65%' }}
+              className="bg-primary-600 h-2 rounded-full transition-all duration-500"
+              style={{ width: '65%' }}
             ></div>
           </div>
           <p className="text-xs text-primary-700 dark:text-primary-300 mt-2">
@@ -105,4 +107,4 @@ const SideBar: React.FC<SideBarProps> = ({
   );
 };
 
-export default SideBar;
+export default Sidebar;
