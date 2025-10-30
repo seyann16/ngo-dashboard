@@ -2,14 +2,26 @@ import React from "react";
 import StatsCard from "./StatsCard";
 import { FiDollarSign, FiUsers, FiTarget, FiAward, FiRefreshCw } from "react-icons/fi";
 import { useDashboardData } from "../../hooks/useDashboardData";
+import { useNotifications } from "../../hooks/useNotifications";
 import RecentDonations from './RecentDonations';
 import CampaignProgress from "./CampaignProgress";
 import DonationChart from "../charts/DonationChart";
 import LoadingSpinner from "../ui/LoadingSpinner";
 import ErrorBoundary from "../ui/ErrorBoundary";
+import ExportButton from "./ExportButton";
 
 const Dashboard: React.FC = () => {
   const { data, loading, error, refreshData } = useDashboardData();
+  const { addNotification } = useNotifications();
+
+  const handleRefresh = async () => {
+    await refreshData();
+    addNotification({
+      type: 'success',
+      title: 'Dashboard Updated',
+      message: 'Your dashboard has been refreshed successfully.',
+    });
+  };
 
   // Format stats for stats cards
   const stats = data ? [
@@ -59,7 +71,7 @@ const Dashboard: React.FC = () => {
               {error}
             </p>
             <button
-              onClick={refreshData} 
+              onClick={handleRefresh} 
               className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 focus:otuline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors"
             >
               <FiRefreshCw className="w-4 h-4 mr-2" aria-hidden="true" />
@@ -115,6 +127,17 @@ const Dashboard: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-400 mt-1">
             Welcome back! Here's what's happening with your campaigns today.
           </p>
+        </div>
+
+        <div className="flex items-center space-x-3 mt-4 sm:mt-0">
+          <ExportButton data={data} />
+          <button 
+            onClick={handleRefresh}
+            className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors"
+            aria-label="Refresh dashboard data"
+          >
+            <FiRefreshCw  className="w-4 h-4" aria-hidden="true" />
+          </button>
         </div>
 
         {/* Stats Grid - BUG FIX: Enhanced responsive grid with better breakpoints */}
