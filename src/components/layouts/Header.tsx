@@ -1,5 +1,5 @@
 import React from "react";
-import { useTheme } from "../../contexts/useTheme";
+import { useTheme } from "../../hooks/useTheme";
 import { FiSun, FiMoon, FiBell } from "react-icons/fi";
 
 const Header: React.FC = () => {
