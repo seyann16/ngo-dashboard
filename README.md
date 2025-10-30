@@ -315,7 +315,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 Need help with setup or customization?
-- 📧 Email: support@example.com
+- 📧 Email: efrenpongase@gmail.com
 - 🐛 [Issues](https://github.com/your-username/ngo-donation-dashboard/issues)
 - 💬 [Discussions](https://github.com/your-username/ngo-donation-dashboard/discussions)
 
