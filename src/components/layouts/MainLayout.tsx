@@ -73,8 +73,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       >
         <Sidebar 
           isOpen={sidebarOpen}
-          activeItem={activeNavItem}
-          onItemClick={handleNavItemClick}
         />
       </div>
 
